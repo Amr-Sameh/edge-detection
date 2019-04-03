@@ -31,7 +31,7 @@ def get_shuffle_serial(size):
     new_digits = ""
     for index in range(7):
         i = random.choice(places)
-        new_digits = new_digits + digits[i]
+        new_digits = new_digits + " " + digits[i]
     return new_digits
 original_images_path = "orginal/"
 original_images = [join(original_images_path, f) for f in listdir(original_images_path) if
@@ -44,14 +44,18 @@ print(image)
 image = cv2.imread(image)
 height, width = image.shape[:2]
 # start_point = generate_random_point(height, width)
-start_point= (410,300)
+start_point= (385,270)
+start_point_2 =(760,70)
 image_area = height * width
-serial_width, serial_height, serial_font_size = 30,30,11#generate_random_coordinates(height, width, start_point)
+serial_width, serial_height, serial_font_size = 21,27,70
+#generate_random_coordinates(height, width, start_point)
 #if serial_width == False:
   #   index = index - 1
  #    continue
 serial_width = serial_width
-end_point = (round(start_point[0] + serial_width), round(start_point[1] - serial_height))
+#end_point = (round(start_point[0] + serial_width), round(start_point[1] - serial_height))
+end_point =((start_point[0] + serial_width )+9 ,start_point[1] - serial_height)
+end_point_2 =((start_point_2[0] + serial_width )+7 ,start_point_2[1] - serial_height)
 serial_area = serial_height * serial_width
 font = cv2.FONT_HERSHEY_SIMPLEX
 # print(serial_height , " " , serial_width)
@@ -65,12 +69,14 @@ text = get_display(reshaped_text)
     # cv2.circle(image,start_point,2, (0,0,255), -1)
     # cv2.circle(image,end_point, 2, (0,0,255), -1)
     # cv2.imwrite("test.png",image)
-fontpath = "Mirza/Mirza-Regular.ttf"
-font = ImageFont.truetype(fontpath, round(serial_height * 1.7))
+fontpath = "Mirza/Mirza-Bold.ttf"
+font = ImageFont.truetype(fontpath, 45)
 img_pil = Image.fromarray(image)
 draw = ImageDraw.Draw(img_pil)
 d = (start_point[0], start_point[1] - serial_height)
+d2 = (start_point_2[0], start_point_2[1] - serial_height)
 draw.text(d, text, font=font, fill=(0, 0, 0))
+draw.text(d2, text, font=font, fill=(0, 0, 0))
 # draw.rectangle((start_point,end_point))
 image = np.array(img_pil)
 cv2.imwrite("dataset/" + str(0) + ".png", image)

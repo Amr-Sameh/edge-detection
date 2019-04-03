@@ -34,7 +34,7 @@ def generate_random_coordinates(height, width, start_point):
 def get_shuffle_serial(size):
     digits = "٠١٢٣٤٥‬٦٧‬٨٩‬‬"
     places = [0, 1, 2, 3, 4, 5, 7, 8, 10, 11]
-    new_digits = ""
+    new_digits = " "
     for index in range(7):
         i = random.choice(places)
         new_digits = new_digits + digits[i]
@@ -57,16 +57,18 @@ def generate_images(image_count):
         image = cv2.imread(image)
         height, width = image.shape[:2]
         #start_point = generate_random_point(height, width)
-        start_point = (310, 410)
+        start_point = (385, 270)
+        start_point_2 = (760, 70)
         image_area = height * width
-        serial_width, serial_height, serial_font_size = generate_random_coordinates(
-            height, width, start_point)
-        if serial_width == False:
+        serial_width, serial_height, serial_font_size = 21,27,70
+        '''if serial_width == False:
             index = index - 1
-            continue
-        serial_width = serial_width * 0.7
-        end_point = (round(start_point[0] + serial_width),
-                     round(start_point[1] - serial_height))
+            continue'''
+       # serial_width = serial_width * 0.7
+        #end_point = (round(start_point[0] + serial_width),
+                   #  round(start_point[1] - serial_height))
+        end_point = ((start_point[0] + serial_width) + 9, start_point[1] - serial_height)
+        end_point_2 = ((start_point_2[0] + serial_width) + 7, start_point_2[1] - serial_height)
         serial_area = serial_height * serial_width
         font = cv2.FONT_HERSHEY_SIMPLEX
         print("Image Num #", str(index), "start at :", start_point)
@@ -79,12 +81,15 @@ def generate_images(image_count):
         # cv2.circle(image,start_point,2, (0,0,255), -1)
         # cv2.circle(image,end_point, 2, (0,0,255), -1)
         # cv2.imwrite("test.png",image)
-        fontpath = "Mirza/Mirza-Regular.ttf"
-        font = ImageFont.truetype(fontpath, round(serial_height * 1.7))
+        fontpath = "Mirza/Mirza-Bold.ttf"
+        font = ImageFont.truetype(fontpath, 45)
         img_pil = Image.fromarray(image)
         draw = ImageDraw.Draw(img_pil)
         d = (start_point[0], start_point[1] - serial_height)
+        d2 = (start_point_2[0], start_point_2[1] - serial_height)
         draw.text(d, text, font=font, fill=(0, 0, 0))
+
+        draw.text(d2, text, font=font, fill=(0, 0, 0))
         # draw.rectangle((start_point,end_point))
         image = np.array(img_pil)
         cv2.imwrite("dataset/" + str(index) + ".png", image)
@@ -94,7 +99,7 @@ def generate_images(image_count):
         index += 1
 
 
-def generate_xml():
+def generate_xml(index):
     annotation = ET.Element('annotation')
     folder = ET.SubElement(annotation, 'folder')
     filename = ET.SubElement(annotation, 'filename')
@@ -121,8 +126,8 @@ def generate_xml():
     filename.text = str(index) + ".png"
     path.text = join(join(os.getcwd(), "dataset"), str(index) + ".png")
     database.text = "Unknown"
-    _width.text = str(width)
-    _height.text = str(height)
+    _width.text = str(_width)
+    _height.text = str(_height)
     depth.text = "3"
     segmented.text = "0"
     name.text = "serial"
