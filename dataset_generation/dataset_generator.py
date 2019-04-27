@@ -196,6 +196,7 @@ def merge_image (back_ground_path ,image_path,saved_path ='/dataset'):
 
 def merge_image(back_name, image_name, index, outfname='dataset/final'):
         back = Image.open(back_name)
+
         image = Image.open(image_name)
         prc = round(random.uniform(.9,1.3),2)
         # resize logo
@@ -204,13 +205,18 @@ def merge_image(back_name, image_name, index, outfname='dataset/final'):
         hsize = int((float(image.size[1]) * float(wpercent)))
 
         simage = image.resize((wsize, hsize))
+
         mbox = back.getbbox()
         sbox = simage.getbbox()
 
         # right bottom corner
-        box = (mbox[1] - sbox[1], mbox[2] - sbox[2])
+        x = random.choice([1,2,3])
+        y = random.choice([1,2,3])
+        box = (mbox[x] - sbox[x], mbox[y] - sbox[y])
+
         print(box)
         back.paste(simage, box)
+        #back = back.rotate(random.randint(0, 360))
         back.save(outfname +"/" + str(index)+".png")
 
 def  generate_data(image_count):
@@ -224,7 +230,7 @@ def  generate_data(image_count):
 def main():
 
     #generate_images(100)
-    generate_data(1)
+    generate_data(100)
 
 if __name__ == '__main__':
     main()
